@@ -29,7 +29,7 @@ const GalleryPage = () => {
           </TabsContent>
           
           <TabsContent value="carousel">
-            <Carousel />
+            <Carousel autoRotateEffects={true} />
           </TabsContent>
         </Tabs>
       </main>

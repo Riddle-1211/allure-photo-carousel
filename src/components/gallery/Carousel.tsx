@@ -4,18 +4,27 @@ import { usePhotoContext, Photo } from '@/contexts/PhotoContext';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, ArrowRight, ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
 
-const Carousel = () => {
+type EffectType = 'fade' | 'cube' | 'cards' | 'parallax';
+const EFFECTS: EffectType[] = ['fade', 'cube', 'cards', 'parallax'];
+
+interface CarouselProps {
+  autoRotateEffects?: boolean;
+}
+
+const Carousel = ({ autoRotateEffects = false }: CarouselProps) => {
   const { photos } = usePhotoContext();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [effect, setEffect] = useState<'fade' | 'cube' | 'cards' | 'parallax'>('fade');
+  const [effect, setEffect] = useState<EffectType>('fade');
+  const [effectIndex, setEffectIndex] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
   const [slidesPerView, setSlidesPerView] = useState(3);
   const [speed, setSpeed] = useState(2000); // milliseconds between transitions
+  const [effectChangeInterval, setEffectChangeInterval] = useState(10000); // 10 seconds between effect changes
 
+  // Effect for slide autoplay
   useEffect(() => {
     let interval: number | null = null;
     
@@ -29,6 +38,22 @@ const Carousel = () => {
       if (interval) clearInterval(interval);
     };
   }, [autoplay, photos.length, speed]);
+
+  // Effect for auto-rotating effects
+  useEffect(() => {
+    let interval: number | null = null;
+    
+    if (autoRotateEffects) {
+      interval = window.setInterval(() => {
+        setEffectIndex((prevIndex) => (prevIndex + 1) % EFFECTS.length);
+        setEffect(EFFECTS[(effectIndex + 1) % EFFECTS.length]);
+      }, effectChangeInterval);
+    }
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [autoRotateEffects, effectIndex, effectChangeInterval]);
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % photos.length);
@@ -56,33 +81,62 @@ const Carousel = () => {
 
   return (
     <div className="space-y-6">
-      {/* Effect Selector */}
-      <div className="flex justify-between items-center">
-        <Tabs value={effect} onValueChange={(value) => setEffect(value as any)} className="w-full max-w-md">
-          <TabsList className="grid grid-cols-4 w-full">
-            <TabsTrigger value="fade">Fade</TabsTrigger>
-            <TabsTrigger value="cube">Cube</TabsTrigger>
-            <TabsTrigger value="cards">Cards</TabsTrigger>
-            <TabsTrigger value="parallax">Parallax</TabsTrigger>
-          </TabsList>
-        </Tabs>
-        
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-medium">Autoplay</span>
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={autoplay}
-              onChange={() => setAutoplay(!autoplay)}
-              className="sr-only peer"
-            />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-gallery-purple rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gallery-purple"></div>
-          </label>
+      {!autoRotateEffects && (
+        <div className="flex justify-between items-center">
+          <div className="flex gap-4 flex-wrap">
+            {EFFECTS.map((effectType) => (
+              <Button
+                key={effectType}
+                variant={effect === effectType ? "default" : "outline"}
+                onClick={() => setEffect(effectType)}
+                className="capitalize"
+              >
+                {effectType}
+              </Button>
+            ))}
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium">Autoplay</span>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={autoplay}
+                onChange={() => setAutoplay(!autoplay)}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-gallery-purple rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gallery-purple"></div>
+            </label>
+          </div>
         </div>
-      </div>
+      )}
+
+      {autoRotateEffects && (
+        <div className="flex justify-between items-center">
+          <div className="text-lg font-medium">
+            <span className="capitalize text-gallery-purple">{effect}</span> Effect
+            <span className="text-sm ml-2 text-muted-foreground">
+              Auto-changing every {effectChangeInterval/1000} seconds
+            </span>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium">Autoplay Slides</span>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={autoplay}
+                onChange={() => setAutoplay(!autoplay)}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-gallery-purple rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gallery-purple"></div>
+            </label>
+          </div>
+        </div>
+      )}
 
       {/* Settings Controls */}
-      {effect !== 'cards' && effect !== 'cube' && (
+      {(effect !== 'cards' && effect !== 'cube') && !autoRotateEffects && (
         <div className="flex items-center gap-4">
           <span className="text-sm">Slides:</span>
           <Slider
@@ -105,6 +159,37 @@ const Carousel = () => {
             onValueChange={(value) => setSpeed(value[0])}
           />
           <span className="text-sm font-medium">{speed}ms</span>
+        </div>
+      )}
+
+      {/* Auto-rotating effect speed control */}
+      {autoRotateEffects && (
+        <div className="flex items-center gap-4">
+          <span className="text-sm">Effect Change Speed:</span>
+          <Slider
+            defaultValue={[effectChangeInterval]}
+            max={20000}
+            min={5000}
+            step={1000}
+            className="w-40"
+            onValueChange={(value) => setEffectChangeInterval(value[0])}
+          />
+          <span className="text-sm font-medium">{effectChangeInterval/1000}s</span>
+          
+          {(effect !== 'cards' && effect !== 'cube') && (
+            <>
+              <span className="ml-6 text-sm">Slides:</span>
+              <Slider
+                value={[slidesPerView]}
+                max={6}
+                min={1}
+                step={1}
+                className="w-40"
+                onValueChange={(value) => setSlidesPerView(value[0])}
+              />
+              <span className="text-sm font-medium">{slidesPerView}</span>
+            </>
+          )}
         </div>
       )}
       
