@@ -1,67 +1,66 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // Sample placeholder photos
-const placeholderPhotos = [
+const placeholderPhotos: Photo[] = [
   {
     id: 1,
     title: "Mountain Landscape",
     url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-    size: "wide"
+    size: "wide" as const
   },
   {
     id: 2,
     title: "Ocean Waves",
     url: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
-    size: "regular"
+    size: "regular" as const
   },
   {
     id: 3,
     title: "Urban Architecture",
     url: "https://images.unsplash.com/photo-1527576539890-dfa815648363",
-    size: "tall"
+    size: "tall" as const
   },
   {
     id: 4,
     title: "Colorful Flowers",
     url: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07",
-    size: "regular"
+    size: "regular" as const
   },
   {
     id: 5,
     title: "Night Sky",
     url: "https://images.unsplash.com/photo-1470813740244-df37b8c1edcb",
-    size: "wide"
+    size: "wide" as const
   },
   {
     id: 6,
     title: "Modern Building",
     url: "https://images.unsplash.com/photo-1487958449943-2429e8be8625",
-    size: "tall"
+    size: "tall" as const
   },
   {
     id: 7,
     title: "River Valley",
     url: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb",
-    size: "regular"
+    size: "regular" as const
   },
   {
     id: 8,
     title: "Wavy Building",
     url: "https://images.unsplash.com/photo-1493397212122-2b85dda8106b",
-    size: "regular"
+    size: "regular" as const
   },
   {
     id: 9,
     title: "Tabby Cat",
     url: "https://images.unsplash.com/photo-1582562124811-c09040d0a901",
-    size: "wide"
+    size: "wide" as const
   },
   {
     id: 10,
     title: "Cozy Living Room",
     url: "https://images.unsplash.com/photo-1721322800607-8c38375eef04",
-    size: "tall"
+    size: "tall" as const
   }
 ];
 
