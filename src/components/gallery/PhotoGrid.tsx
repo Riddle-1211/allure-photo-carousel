@@ -1,30 +1,49 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { usePhotoContext, Photo } from '@/contexts/PhotoContext';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from '@/lib/utils';
 import { ImageIcon } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const PhotoGrid = () => {
   const { photos } = usePhotoContext();
+  const [layout, setLayout] = useState<'grid' | 'masonry'>('grid');
 
   return (
-    <div className="image-grid py-8">
-      {photos.map((photo) => (
-        <PhotoCard key={photo.id} photo={photo} />
-      ))}
+    <div>
+      <div className="mb-4">
+        <Tabs 
+          value={layout} 
+          onValueChange={(value) => setLayout(value as 'grid' | 'masonry')}
+          className="w-[200px]"
+        >
+          <TabsList>
+            <TabsTrigger value="grid">Standard Grid</TabsTrigger>
+            <TabsTrigger value="masonry">Masonry</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
+
+      <div className={cn(
+        layout === 'grid' ? "image-grid" : "masonry-grid",
+      )}>
+        {photos.map((photo) => (
+          <PhotoCard key={photo.id} photo={photo} layout={layout} />
+        ))}
+      </div>
     </div>
   );
 };
 
-const PhotoCard = ({ photo }: { photo: Photo }) => {
+const PhotoCard = ({ photo, layout }: { photo: Photo; layout: 'grid' | 'masonry' }) => {
   return (
     <Link to={`/photo/${photo.id}`}>
       <Card 
         className={cn(
           "photo-card overflow-hidden relative rounded-xl hover-scale", 
-          photo.size
+          layout === 'grid' ? photo.size : 'w-full'
         )}
       >
         <CardContent className="p-0 h-full w-full">
@@ -33,6 +52,7 @@ const PhotoCard = ({ photo }: { photo: Photo }) => {
               src={photo.url} 
               alt={photo.title} 
               className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+              loading="lazy"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.onerror = null;

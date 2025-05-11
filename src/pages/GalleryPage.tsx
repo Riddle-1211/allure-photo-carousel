@@ -11,7 +11,7 @@ const GalleryPage = () => {
       <Navbar />
       
       <main className="flex-grow container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-2">Your Gallery</h1>
+        <h1 className="text-3xl font-bold mb-2 gradient-text">Your Gallery</h1>
         <p className="text-muted-foreground mb-6">
           Browse your collection of beautiful memories and moments.
         </p>
@@ -20,7 +20,7 @@ const GalleryPage = () => {
           <div className="flex justify-between items-center mb-6">
             <TabsList>
               <TabsTrigger value="grid">Grid View</TabsTrigger>
-              <TabsTrigger value="carousel">Carousel</TabsTrigger>
+              <TabsTrigger value="carousel">Effects Gallery</TabsTrigger>
             </TabsList>
           </div>
           
