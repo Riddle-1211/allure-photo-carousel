@@ -1,7 +1,6 @@
-
 import React from 'react';
 import Navbar from '@/components/Navbar';
-import DiagonalSlider from '@/components/gallery/DiagonalSlider';
+import Carousel from '@/components/gallery/Carousel';
 import RotationalCarousel from '@/components/gallery/RotationalCarousel';
 import PhotoGrid from '@/components/gallery/PhotoGrid';
 import { GalleryIcon } from '@/components/icons/GalleryIcon';
@@ -15,8 +14,10 @@ const Index = () => {
       
       <main className="flex-grow">
         {/* Hero Section */}
-        <div className="relative">
-          <DiagonalSlider />
+        <div className="relative py-8 md:py-12 bg-gradient-to-b from-background to-secondary/30">
+          <div className="container mx-auto">
+            <Carousel autoRotateEffects={true} />
+          </div>
         </div>
         
         {/* Featured Section */}
