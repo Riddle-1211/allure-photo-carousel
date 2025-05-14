@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { usePhotoContext } from '@/contexts/PhotoContext';
@@ -56,11 +55,11 @@ const PhotoDetailsPage = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-3">
-            <div className="rounded-lg overflow-hidden shadow-xl">
+            <div className="rounded-lg overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center h-[calc(80vh-120px)] max-h-[650px]">
               <img 
                 src={photo.url} 
                 alt={photo.title}
-                className="w-full h-auto"
+                className="max-w-full max-h-full object-contain"
               />
             </div>
           </div>
