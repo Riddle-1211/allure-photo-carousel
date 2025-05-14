@@ -27,13 +27,15 @@ const RotationalCarousel = () => {
     
     setTimeout(() => {
       setIsRotating(false);
-    }, 600); 
+    }, 700); 
   }, [carouselPhotos.length]);
 
   useEffect(() => {
     if (carouselPhotos.length > 1) {
       const timer = setInterval(() => {
-        rotate('next');
+        if (!document.hidden) { // Pause rotation when tab is not active
+          rotate('next');
+        }
       }, 3000); 
       return () => clearInterval(timer);
     }
@@ -52,7 +54,7 @@ const RotationalCarousel = () => {
     <div className="w-full px-4 py-16 bg-slate-900">
       <h2 className="text-2xl font-bold mb-12 text-center text-white">Featured Photos</h2>
       
-      <div className="carousel-container relative mx-auto w-full max-w-4xl h-[450px] md:h-[500px]">
+      <div className="carousel-container relative mx-auto w-full max-w-4xl h-[400px] md:h-[450px]">
         <Button
           variant="outline"
           onClick={() => rotate('prev')}
@@ -85,54 +87,54 @@ const RotationalCarousel = () => {
             
             let zIndex, opacity, scale, rotateYDeg, translateX, translateZ, filterBlur;
 
-            if (isActive) { // Center item
+            if (isActive) { // Center item (medium size)
               zIndex = carouselPhotos.length + 1;
               opacity = 1;
-              scale = 1.15; 
+              scale = 1.0; // Reduced scale
               rotateYDeg = 0;
               translateX = '0%';
-              translateZ = '60px';
+              translateZ = '30px'; // Brought closer
               filterBlur = 'blur(0px)';
             } else if (distance === 1) { // Item to the immediate right
               zIndex = carouselPhotos.length - 1;
               opacity = 0.7;
-              scale = 0.9;
-              rotateYDeg = -35;
-              translateX = '45%'; 
-              translateZ = '-30px';
+              scale = 0.8; // Adjusted scale
+              rotateYDeg = -30; // Adjusted rotation
+              translateX = '40%'; // Adjusted position
+              translateZ = '-15px'; // Adjusted position
               filterBlur = 'blur(2px)';
             } else if (distance === carouselPhotos.length - 1) { // Item to the immediate left
               zIndex = carouselPhotos.length - 1;
               opacity = 0.7;
-              scale = 0.9;
-              rotateYDeg = 35;
-              translateX = '-45%';
-              translateZ = '-30px';
+              scale = 0.8; // Adjusted scale
+              rotateYDeg = 30; // Adjusted rotation
+              translateX = '-40%'; // Adjusted position
+              translateZ = '-15px'; // Adjusted position
               filterBlur = 'blur(2px)';
             } else if (distance === 2) { // Item to the far right
               zIndex = carouselPhotos.length - 2;
-              opacity = 0.4;
-              scale = 0.75;
-              rotateYDeg = -55;
-              translateX = '85%';
-              translateZ = '-120px';
+              opacity = 0.35; // Slightly reduced opacity
+              scale = 0.65; // Adjusted scale
+              rotateYDeg = -45; // Adjusted rotation
+              translateX = '70%'; // Adjusted position
+              translateZ = '-80px'; // Adjusted position
               filterBlur = 'blur(4px)';
             } else if (distance === carouselPhotos.length - 2) { // Item to the far left
               zIndex = carouselPhotos.length - 2;
-              opacity = 0.4;
-              scale = 0.75;
-              rotateYDeg = 55;
-              translateX = '-85%';
-              translateZ = '-120px';
+              opacity = 0.35; // Slightly reduced opacity
+              scale = 0.65; // Adjusted scale
+              rotateYDeg = 45; // Adjusted rotation
+              translateX = '-70%'; // Adjusted position
+              translateZ = '-80px'; // Adjusted position
               filterBlur = 'blur(4px)';
-            } else { // Items further out (fallback)
+            } else { // Items further out (fallback, should not be visible with 5 items)
               zIndex = 1;
-              opacity = 0.1; // Reduced opacity for very far items
+              opacity = 0; 
               scale = 0.5;
-              rotateYDeg = distance < carouselPhotos.length / 2 ? -70 : 70;
-              translateX = distance < carouselPhotos.length / 2 ? '120%' : '-120%';
-              translateZ = '-200px';
-              filterBlur = 'blur(6px)'; // More blur for very far items
+              rotateYDeg = distance < carouselPhotos.length / 2 ? -60 : 60;
+              translateX = distance < carouselPhotos.length / 2 ? '100%' : '-100%';
+              translateZ = '-150px';
+              filterBlur = 'blur(6px)';
             }
             
             return (
@@ -148,8 +150,8 @@ const RotationalCarousel = () => {
                 }}
               >
                 <Link to={`/photo/${photo.id}`} className={cn(
-                  "block h-full w-full overflow-hidden rounded-xl shadow-2xl",
-                  isActive ? "ring-4 ring-gallery-purple/70" : "ring-1 ring-white/10"
+                  "block h-full w-full overflow-hidden rounded-lg shadow-xl",
+                  isActive ? "ring-2 ring-gallery-purple/60" : "ring-1 ring-white/5"
                 )}>
                   <img
                     src={photo.url}
@@ -157,8 +159,8 @@ const RotationalCarousel = () => {
                     className="h-full w-full object-cover"
                   />
                   {isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-4 md:p-6">
-                      <h3 className="text-lg md:text-xl font-bold text-white">{photo.title}</h3>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex flex-col justify-end p-4 md:p-5">
+                      <h3 className="text-md md:text-lg font-semibold text-white shadow-sm">{photo.title}</h3>
                     </div>
                   )}
                 </Link>
