@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { usePhotoContext } from '@/contexts/PhotoContext';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { ArrowLeft, ArrowRight } from 'lucide-react'; // Using lucide icons already available
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const RotationalCarousel = () => {
   const { photos } = usePhotoContext();
@@ -12,7 +11,6 @@ const RotationalCarousel = () => {
   const [isRotating, setIsRotating] = useState(false);
   
   // Use a fixed number of photos for this specific carousel style, e.g., 5
-  // Ensure we have enough photos, or repeat if necessary for the effect
   const carouselPhotos = photos.length >= 5 ? photos.slice(0, 5) : 
     photos.length > 0 ? [...photos, ...photos, ...photos, ...photos, ...photos].slice(0,5) : [];
 
@@ -29,7 +27,7 @@ const RotationalCarousel = () => {
     
     setTimeout(() => {
       setIsRotating(false);
-    }, 600); // Animation duration, slightly increased for smoother feel
+    }, 600); 
   }, [carouselPhotos.length]);
 
   useEffect(() => {
@@ -51,12 +49,10 @@ const RotationalCarousel = () => {
   }
 
   return (
-    <div className="w-full px-4 py-16 bg-slate-900"> {/* Dark background */}
+    <div className="w-full px-4 py-16 bg-slate-900">
       <h2 className="text-2xl font-bold mb-12 text-center text-white">Featured Photos</h2>
       
-      {/* Carousel Container with Perspective */}
       <div className="carousel-container relative mx-auto w-full max-w-4xl h-[450px] md:h-[500px]">
-        {/* Navigation Buttons */}
         <Button
           variant="outline"
           onClick={() => rotate('prev')}
@@ -79,7 +75,6 @@ const RotationalCarousel = () => {
           <span className="sr-only">Next</span>
         </Button>
 
-        {/* Rotational Carousel Items Area */}
         <div className={cn(
           "rotational-carousel relative h-full w-full",
           isRotating ? "transition-transform duration-500" : ""
@@ -88,15 +83,16 @@ const RotationalCarousel = () => {
             const distance = ((index - currentIndex + carouselPhotos.length) % carouselPhotos.length);
             const isActive = distance === 0;
             
-            let zIndex, opacity, scale, rotateYDeg, translateX, translateZ;
+            let zIndex, opacity, scale, rotateYDeg, translateX, translateZ, filterBlur;
 
             if (isActive) { // Center item
               zIndex = carouselPhotos.length + 1;
               opacity = 1;
-              scale = 1.15; // Slightly larger and more prominent
+              scale = 1.15; 
               rotateYDeg = 0;
               translateX = '0%';
-              translateZ = '60px'; // Bring slightly forward
+              translateZ = '60px';
+              filterBlur = 'blur(0px)';
             } else if (distance === 1) { // Item to the immediate right
               zIndex = carouselPhotos.length - 1;
               opacity = 0.7;
@@ -104,6 +100,7 @@ const RotationalCarousel = () => {
               rotateYDeg = -35;
               translateX = '45%'; 
               translateZ = '-30px';
+              filterBlur = 'blur(2px)';
             } else if (distance === carouselPhotos.length - 1) { // Item to the immediate left
               zIndex = carouselPhotos.length - 1;
               opacity = 0.7;
@@ -111,6 +108,7 @@ const RotationalCarousel = () => {
               rotateYDeg = 35;
               translateX = '-45%';
               translateZ = '-30px';
+              filterBlur = 'blur(2px)';
             } else if (distance === 2) { // Item to the far right
               zIndex = carouselPhotos.length - 2;
               opacity = 0.4;
@@ -118,6 +116,7 @@ const RotationalCarousel = () => {
               rotateYDeg = -55;
               translateX = '85%';
               translateZ = '-120px';
+              filterBlur = 'blur(4px)';
             } else if (distance === carouselPhotos.length - 2) { // Item to the far left
               zIndex = carouselPhotos.length - 2;
               opacity = 0.4;
@@ -125,28 +124,31 @@ const RotationalCarousel = () => {
               rotateYDeg = 55;
               translateX = '-85%';
               translateZ = '-120px';
-            } else { // Items further out (should not happen with 5 items, but as a fallback)
+              filterBlur = 'blur(4px)';
+            } else { // Items further out (fallback)
               zIndex = 1;
-              opacity = 0;
+              opacity = 0.1; // Reduced opacity for very far items
               scale = 0.5;
               rotateYDeg = distance < carouselPhotos.length / 2 ? -70 : 70;
               translateX = distance < carouselPhotos.length / 2 ? '120%' : '-120%';
               translateZ = '-200px';
+              filterBlur = 'blur(6px)'; // More blur for very far items
             }
             
             return (
               <div
-                key={photo.id + '-' + index} // Ensure key is unique if photos are repeated
-                className="absolute top-0 left-0 w-full h-full transition-all duration-700 ease-out" // Slower transition for smoother effect
+                key={photo.id + '-' + index}
+                className="absolute top-0 left-0 w-full h-full transition-all duration-700 ease-out"
                 style={{
                   zIndex,
                   opacity,
                   transform: `translateX(${translateX}) translateZ(${translateZ}) rotateY(${rotateYDeg}deg) scale(${scale})`,
-                  transformOrigin: 'center center', // Crucial for correct rotation and scaling
+                  filter: filterBlur,
+                  transformOrigin: 'center center',
                 }}
               >
                 <Link to={`/photo/${photo.id}`} className={cn(
-                  "block h-full w-full overflow-hidden rounded-xl shadow-2xl", // Slightly smaller rounding, stronger shadow
+                  "block h-full w-full overflow-hidden rounded-xl shadow-2xl",
                   isActive ? "ring-4 ring-gallery-purple/70" : "ring-1 ring-white/10"
                 )}>
                   <img
