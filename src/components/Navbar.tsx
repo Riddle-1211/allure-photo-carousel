@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { UploadIcon } from './icons/UploadIcon';
 import { GalleryIcon } from './icons/GalleryIcon';
 import { cn } from '@/lib/utils';
-import { ZoomInIcon, ImagesIcon } from 'lucide-react';
+import { ImagesIcon, FolderOpen } from 'lucide-react';
 
 const Navbar = () => {
   const location = useLocation();
@@ -46,7 +46,7 @@ const Navbar = () => {
           </Link>
         </div>
         
-        <nav className="hidden md:flex items-center">
+        <nav className="flex items-center">
           <div className="bg-white/40 backdrop-blur-sm border border-white/20 rounded-full p-1 px-1">
             <div className="flex space-x-1">
               <Link 
@@ -72,6 +72,17 @@ const Navbar = () => {
                 Gallery
               </Link>
               <Link 
+                to="/albums" 
+                className={cn(
+                  "text-sm font-medium px-4 py-1.5 rounded-full transition-colors",
+                  isActive('/albums') 
+                    ? "bg-gallery-purple text-white shadow-sm" 
+                    : "hover:bg-white/50 text-gray-700"
+                )}
+              >
+                Albums
+              </Link>
+              <Link 
                 to="/favorites" 
                 className={cn(
                   "text-sm font-medium px-4 py-1.5 rounded-full transition-colors",
@@ -82,41 +93,22 @@ const Navbar = () => {
               >
                 Favorites
               </Link>
+              <Link 
+                to="/upload" 
+                className={cn(
+                  "text-sm font-medium px-4 py-1.5 rounded-full transition-colors",
+                  isActive('/upload') 
+                    ? "bg-gallery-purple text-white shadow-sm" 
+                    : "hover:bg-white/50 text-gray-700"
+                )}
+              >
+                Upload
+              </Link>
             </div>
           </div>
         </nav>
         
         <div className="flex items-center gap-2">
-          <Button 
-            asChild 
-            variant="ghost" 
-            size="icon" 
-            className={cn(
-              "mr-2 rounded-full",
-              scrolled ? "text-gray-700 hover:bg-gray-100" : "text-gray-700 hover:bg-white/50"
-            )}
-          >
-            <Link to="/gallery" title="Browse Gallery">
-              <ImagesIcon className="h-5 w-5" />
-              <span className="sr-only">Gallery</span>
-            </Link>
-          </Button>
-          
-          <Button 
-            asChild 
-            variant="ghost" 
-            size="icon" 
-            className={cn(
-              "mr-2 rounded-full",
-              scrolled ? "text-gray-700 hover:bg-gray-100" : "text-gray-700 hover:bg-white/50"
-            )}
-          >
-            <Link to="/photo/1" title="Photo Detail View">
-              <ZoomInIcon className="h-5 w-5" />
-              <span className="sr-only">View</span>
-            </Link>
-          </Button>
-          
           <Button 
             asChild
             className="bg-gradient-to-r from-gallery-purple to-gallery-darkPurple text-white shadow-md hover:shadow-lg transition-all duration-300 hover:opacity-90"

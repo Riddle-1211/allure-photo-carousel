@@ -1,14 +1,12 @@
 
 import React from 'react';
-import Navbar from '@/components/Navbar';
+import NavbarWithAlbums from '@/components/NavbarWithAlbums';
 import PhotoGrid from '@/components/gallery/PhotoGrid';
-import Carousel from '@/components/gallery/Carousel';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const GalleryPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <NavbarWithAlbums />
       
       <main className="flex-grow container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-2 gradient-text">Your Gallery</h1>
@@ -16,22 +14,9 @@ const GalleryPage = () => {
           Browse your collection of beautiful memories and moments.
         </p>
         
-        <Tabs defaultValue="grid" className="w-full">
-          <div className="flex justify-between items-center mb-6">
-            <TabsList>
-              <TabsTrigger value="grid">Grid View</TabsTrigger>
-              <TabsTrigger value="carousel">Effects Gallery</TabsTrigger>
-            </TabsList>
-          </div>
-          
-          <TabsContent value="grid" className="mt-6">
-            <PhotoGrid />
-          </TabsContent>
-          
-          <TabsContent value="carousel">
-            <Carousel autoRotateEffects={true} />
-          </TabsContent>
-        </Tabs>
+        <div className="mt-6">
+          <PhotoGrid />
+        </div>
       </main>
       
       <footer className="bg-gray-100 py-6">

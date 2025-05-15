@@ -1,50 +1,30 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { usePhotoContext, Photo } from '@/contexts/PhotoContext';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from '@/lib/utils';
 import { ImageIcon } from 'lucide-react';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const PhotoGrid = () => {
   const { photos } = usePhotoContext();
-  const [layout, setLayout] = useState<'grid' | 'masonry'>('grid');
 
   return (
     <div>
-      <div className="mb-4">
-        <Tabs 
-          value={layout} 
-          onValueChange={(value) => setLayout(value as 'grid' | 'masonry')}
-          className="w-[200px]"
-        >
-          <TabsList>
-            <TabsTrigger value="grid">Standard Grid</TabsTrigger>
-            <TabsTrigger value="masonry">Masonry</TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
-
-      <div className={cn(
-        layout === 'grid' ? "image-grid" : "masonry-grid",
-      )}>
+      <div className="masonry-grid">
         {photos.map((photo) => (
-          <PhotoCard key={photo.id} photo={photo} layout={layout} />
+          <PhotoCard key={photo.id} photo={photo} />
         ))}
       </div>
     </div>
   );
 };
 
-const PhotoCard = ({ photo, layout }: { photo: Photo; layout: 'grid' | 'masonry' }) => {
+const PhotoCard = ({ photo }: { photo: Photo }) => {
   return (
     <Link to={`/photo/${photo.id}`}>
       <Card 
-        className={cn(
-          "photo-card overflow-hidden relative rounded-xl hover-scale", 
-          layout === 'grid' ? photo.size : 'w-full'
-        )}
+        className="photo-card overflow-hidden relative rounded-xl hover-scale w-full"
       >
         <CardContent className="p-0 h-full w-full">
           <div className="relative h-full w-full shimmer">

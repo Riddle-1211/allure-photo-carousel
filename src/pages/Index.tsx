@@ -1,6 +1,6 @@
 
 import React from 'react';
-import NavbarWithAlbums from '@/components/NavbarWithAlbums';
+import Navbar from '@/components/Navbar';
 import Carousel from '@/components/gallery/Carousel';
 import RotationalCarousel from '@/components/gallery/RotationalCarousel';
 import PhotoGrid from '@/components/gallery/PhotoGrid';
@@ -12,7 +12,7 @@ import { Folder } from 'lucide-react';
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <NavbarWithAlbums />
+      <Navbar />
       
       <main className="flex-grow">
         {/* Hero Section */}
