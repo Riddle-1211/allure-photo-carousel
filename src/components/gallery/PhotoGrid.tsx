@@ -27,7 +27,8 @@ const PhotoCard = ({ photo }: { photo: Photo }) => {
   return (
     <>
       <Card 
-        className="photo-card overflow-hidden relative rounded-xl hover-scale w-full aspect-square"
+        className="photo-card overflow-hidden relative rounded-xl hover-scale w-full aspect-square cursor-pointer"
+        onClick={() => setIsExpanded(true)}
       >
         <CardContent className="p-0 h-full w-full">
           <div className="relative h-full w-full shimmer">
@@ -41,7 +42,6 @@ const PhotoCard = ({ photo }: { photo: Photo }) => {
                 target.onerror = null;
                 target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
               }}
-              onClick={() => setIsExpanded(true)}
             />
             <div className="photo-overlay absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/70 opacity-0 transition-opacity duration-300 flex flex-col justify-end">
               <div className="p-4 flex justify-between items-end">
@@ -69,6 +69,7 @@ const PhotoCard = ({ photo }: { photo: Photo }) => {
             <Link 
               to={`/photo/${photo.id}`}
               className="absolute top-3 right-3 bg-black/50 text-white rounded-full p-1.5 backdrop-blur-sm opacity-0 hover:opacity-100 transition-opacity"
+              onClick={(e) => e.stopPropagation()}
             >
               <ImageIcon className="h-4 w-4" />
             </Link>
