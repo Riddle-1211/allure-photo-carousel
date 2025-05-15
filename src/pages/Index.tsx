@@ -7,6 +7,7 @@ import PhotoGrid from '@/components/gallery/PhotoGrid';
 import { GalleryIcon } from '@/components/icons/GalleryIcon';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Folder } from 'lucide-react';
 
 const Index = () => {
   return (
