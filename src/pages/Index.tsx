@@ -1,5 +1,6 @@
+
 import React from 'react';
-import Navbar from '@/components/Navbar';
+import NavbarWithAlbums from '@/components/NavbarWithAlbums';
 import Carousel from '@/components/gallery/Carousel';
 import RotationalCarousel from '@/components/gallery/RotationalCarousel';
 import PhotoGrid from '@/components/gallery/PhotoGrid';
@@ -10,7 +11,7 @@ import { Link } from 'react-router-dom';
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <NavbarWithAlbums />
       
       <main className="flex-grow">
         {/* Hero Section */}
@@ -43,6 +44,29 @@ const Index = () => {
           </div>
           
           <PhotoGrid />
+        </section>
+        
+        {/* Albums CTA */}
+        <section className="bg-gradient-to-r from-gallery-purple/20 to-gallery-darkPurple/20 py-16">
+          <div className="container mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-4">Organize Your Photos</h2>
+            <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
+              Create albums to organize your photos into collections by theme, event, or any way you prefer.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" className="bg-gallery-purple hover:bg-gallery-darkPurple">
+                <Link to="/albums">
+                  <Folder className="mr-2 h-5 w-5" />
+                  Browse Albums
+                </Link>
+              </Button>
+              <Button asChild size="lg">
+                <Link to="/upload">
+                  Upload New Photos
+                </Link>
+              </Button>
+            </div>
+          </div>
         </section>
         
         {/* Upload CTA */}

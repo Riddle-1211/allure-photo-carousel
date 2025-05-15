@@ -11,6 +11,8 @@ import GalleryPage from "./pages/GalleryPage";
 import UploadPage from "./pages/UploadPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import PhotoDetailsPage from "./pages/PhotoDetailsPage";
+import AlbumsPage from "./pages/AlbumsPage";
+import AlbumDetailsPage from "./pages/AlbumDetailsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
             <Route path="/upload" element={<UploadPage />} />
             <Route path="/favorites" element={<FavoritesPage />} />
             <Route path="/photo/:id" element={<PhotoDetailsPage />} />
+            <Route path="/albums" element={<AlbumsPage />} />
+            <Route path="/album/:id" element={<AlbumDetailsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

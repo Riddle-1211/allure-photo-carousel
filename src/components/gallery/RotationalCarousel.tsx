@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { usePhotoContext } from '@/contexts/PhotoContext';
 import { Button } from '@/components/ui/button';
@@ -54,7 +55,7 @@ const RotationalCarousel = () => {
     <div className="w-full px-4 py-16 bg-slate-900">
       <h2 className="text-2xl font-bold mb-12 text-center text-white">Featured Photos</h2>
       
-      <div className="carousel-container relative mx-auto w-full max-w-4xl h-[400px] md:h-[450px]">
+      <div className="carousel-container relative mx-auto w-full max-w-3xl h-[300px] md:h-[350px]">
         <Button
           variant="outline"
           onClick={() => rotate('prev')}
@@ -90,47 +91,47 @@ const RotationalCarousel = () => {
             if (isActive) { // Center item (medium size)
               zIndex = carouselPhotos.length + 1;
               opacity = 1;
-              scale = 1.0; // Reduced scale
+              scale = 0.8; // Reduced scale for medium size
               rotateYDeg = 0;
               translateX = '0%';
-              translateZ = '30px'; // Brought closer
+              translateZ = '10px'; // Reduced depth
               filterBlur = 'blur(0px)';
             } else if (distance === 1) { // Item to the immediate right
               zIndex = carouselPhotos.length - 1;
-              opacity = 0.7;
-              scale = 0.8; // Adjusted scale
-              rotateYDeg = -30; // Adjusted rotation
-              translateX = '40%'; // Adjusted position
-              translateZ = '-15px'; // Adjusted position
-              filterBlur = 'blur(2px)';
+              opacity = 0.5;
+              scale = 0.65; // Reduced scale
+              rotateYDeg = -30; 
+              translateX = '40%';
+              translateZ = '-15px';
+              filterBlur = 'blur(3px)'; // Increased blur
             } else if (distance === carouselPhotos.length - 1) { // Item to the immediate left
               zIndex = carouselPhotos.length - 1;
-              opacity = 0.7;
-              scale = 0.8; // Adjusted scale
-              rotateYDeg = 30; // Adjusted rotation
-              translateX = '-40%'; // Adjusted position
-              translateZ = '-15px'; // Adjusted position
-              filterBlur = 'blur(2px)';
+              opacity = 0.5;
+              scale = 0.65; // Reduced scale
+              rotateYDeg = 30;
+              translateX = '-40%';
+              translateZ = '-15px';
+              filterBlur = 'blur(3px)'; // Increased blur
             } else if (distance === 2) { // Item to the far right
               zIndex = carouselPhotos.length - 2;
-              opacity = 0.35; // Slightly reduced opacity
-              scale = 0.65; // Adjusted scale
-              rotateYDeg = -45; // Adjusted rotation
-              translateX = '70%'; // Adjusted position
-              translateZ = '-80px'; // Adjusted position
-              filterBlur = 'blur(4px)';
+              opacity = 0.3;
+              scale = 0.5; // Reduced scale
+              rotateYDeg = -45;
+              translateX = '70%';
+              translateZ = '-80px';
+              filterBlur = 'blur(5px)'; // Increased blur
             } else if (distance === carouselPhotos.length - 2) { // Item to the far left
               zIndex = carouselPhotos.length - 2;
-              opacity = 0.35; // Slightly reduced opacity
-              scale = 0.65; // Adjusted scale
-              rotateYDeg = 45; // Adjusted rotation
-              translateX = '-70%'; // Adjusted position
-              translateZ = '-80px'; // Adjusted position
-              filterBlur = 'blur(4px)';
-            } else { // Items further out (fallback, should not be visible with 5 items)
+              opacity = 0.3;
+              scale = 0.5; // Reduced scale
+              rotateYDeg = 45;
+              translateX = '-70%';
+              translateZ = '-80px';
+              filterBlur = 'blur(5px)'; // Increased blur
+            } else { // Items further out
               zIndex = 1;
               opacity = 0; 
-              scale = 0.5;
+              scale = 0.4;
               rotateYDeg = distance < carouselPhotos.length / 2 ? -60 : 60;
               translateX = distance < carouselPhotos.length / 2 ? '100%' : '-100%';
               translateZ = '-150px';
