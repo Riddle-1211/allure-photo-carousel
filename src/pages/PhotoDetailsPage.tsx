@@ -1,14 +1,17 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { usePhotoContext } from '@/contexts/PhotoContext';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const PhotoDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { getPhotoById, toggleFavorite, deletePhoto } = usePhotoContext();
   const navigate = useNavigate();
+  const [isEnlarged, setIsEnlarged] = useState(false);
   
   const photo = getPhotoById(Number(id));
   
@@ -55,7 +58,7 @@ const PhotoDetailsPage = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           <div className="lg:col-span-3">
-            <div className="rounded-lg overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center h-[calc(80vh-120px)] max-h-[650px]">
+            <div className="rounded-lg overflow-hidden shadow-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center h-[calc(80vh-120px)] max-h-[650px] cursor-pointer" onClick={() => setIsEnlarged(true)}>
               <img 
                 src={photo.url} 
                 alt={photo.title}
@@ -100,6 +103,18 @@ const PhotoDetailsPage = () => {
           </div>
         </div>
       </main>
+      
+      <Dialog open={isEnlarged} onOpenChange={setIsEnlarged}>
+        <DialogContent className="max-w-7xl w-full p-1 bg-black/90 border-neutral-800">
+          <div className="relative aspect-auto max-h-[90vh] flex items-center justify-center">
+            <img
+              src={photo.url}
+              alt={photo.title}
+              className="max-h-full max-w-full object-contain"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
       
       <footer className="bg-gray-100 py-6 mt-12">
         <div className="container mx-auto text-center text-gray-600">
